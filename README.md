@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/header.png" alt="Logo" width="200" height="200">
+  <img src="assets/header.png" alt="Logo" width="600" height="500">
   
   <h1 align="center">Comparative Analysis with Kaggle</h1>
 
@@ -29,7 +29,7 @@
 <br />
 
 <div align="center">
-  <img src="assets/kaggle-background.png" alt="App Background Preview" style="border-radius: 10px; max-width: 600px;">
+  <img src="assets/kaggle-background.png" alt="App Background Preview" style="border-radius: 10px; max-width: 400px;">
 </div>
 
 ## 📖 Overview
