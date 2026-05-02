@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/kaggle-icon.png" alt="Logo" width="150" height="150">
+  <img src="assets/header.png" alt="Logo" width="150" height="150">
   
   <h1 align="center">Comparative Analysis with Kaggle</h1>
 
@@ -17,6 +17,7 @@
   </p>
 
   <p align="center">
+    <a href="https://kaggle-data.streamlit.app"><img src="https://img.shields.io/badge/Live_App-Open_in_Streamlit-FF4B4B.svg?style=for-the-badge&logo=Streamlit&logoColor=white" alt="Live App"></a>
     <img src="https://img.shields.io/badge/Python-3.11+-blue.svg?style=for-the-badge&logo=python&logoColor=white" alt="Python">
     <img src="https://img.shields.io/badge/Streamlit-FF4B4B.svg?style=for-the-badge&logo=Streamlit&logoColor=white" alt="Streamlit">
     <img src="https://img.shields.io/badge/Kaggle-20BEFF.svg?style=for-the-badge&logo=Kaggle&logoColor=white" alt="Kaggle">
