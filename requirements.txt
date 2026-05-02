@@ -1,0 +1,13 @@
+streamlit
+pandas
+scipy
+kaggle
+thefuzz
+python-Levenshtein
+requests
+openpyxl
+plotly
+matplotlib
+seaborn
+PyPDF2
+python-docx
