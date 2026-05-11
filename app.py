@@ -681,7 +681,7 @@ if 'dataset_options' in st.session_state and st.session_state['dataset_options']
                         user_percentile = (kagg_data < user_mean).mean() * 100
                         
                         # Add z-score to processed dataframe
-                        processed_data[f"{user_col}_zscore_vs_kaggle"] = (pd.to_numeric(processed_data[user_col], errors='coerce') - kagg_mean) / kagg_std
+                        processed_data[f"{user_col}_zscore_vs_kaggle"] = (user_data - kagg_mean) / kagg_std
                         processed_data[f"{user_col}_is_anomaly"] = np.abs(processed_data[f"{user_col}_zscore_vs_kaggle"]) > 2
                         
                         diff_pct = ((user_mean - kagg_mean) / kagg_mean) * 100 if kagg_mean != 0 else 0
