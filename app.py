@@ -718,15 +718,6 @@ if 'dataset_options' in st.session_state and st.session_state['dataset_options']
                             fig_box.add_trace(go.Box(y=user_data, name='Your Data'))
                             fig_box.update_layout(title=f"Box Plot: {user_col}")
                             st.plotly_chart(fig_box, use_container_width=True)
-                        
-                        stats_results.append({
-                            "column": user_col,
-                            "matched_kaggle_column": kaggle_col,
-                            "user_mean": float(user_mean),
-                            "kaggle_mean": float(kagg_mean),
-                            "difference_percent": float(diff_pct),
-                            "total_anomalies": len(anomalies)
-                        })
                     
                     if st.button("Generate Statistical Insights with LLM"):
                         with st.spinner("Analyzing statistics..."):
