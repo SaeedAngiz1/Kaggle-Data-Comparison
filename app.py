@@ -295,18 +295,19 @@ def generate_llm_insights(stats_summary, llm_provider, ollama_url, model_name, a
     except Exception as e:
         return f"Error connecting to LLM: {str(e)}"
 
-def fetch_top_datasets(api, query):
+@st.cache_data
+def fetch_top_datasets(_api, query):
     try:
         # Strategy 1: Explicit file_type filter (Most accurate if indexed correctly)
-        datasets = api.dataset_list(search=query, sort_by='votes', file_type='csv')
+        datasets = _api.dataset_list(search=query, sort_by='votes', file_type='csv')
         
         # Strategy 2: If no results, try without filter but with 'csv' in string
         if not datasets:
-            datasets = api.dataset_list(search=f"{query} csv", sort_by='votes')
+            datasets = _api.dataset_list(search=f"{query} csv", sort_by='votes')
             
         # Strategy 3: If still no results, try without 'csv' at all
         if not datasets:
-            datasets = api.dataset_list(search=query, sort_by='votes')
+            datasets = _api.dataset_list(search=query, sort_by='votes')
 
         high_usability = [d for d in datasets if getattr(d, 'usability_rating', 0) >= 0.7]
         if not high_usability:
