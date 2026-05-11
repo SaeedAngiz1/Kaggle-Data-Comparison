@@ -323,7 +323,8 @@ def is_valid_dataset(d, user_context):
     
     # Negative signals (Image/CV/Audio)
     img_keywords = ['computer vision', 'image dataset', 'pixels', 'resnet', 'cnn', 'spectrogram', 'audio classification']
-    user_wants_img = any(k in (user_context or "").lower() for k in ['image', 'vision', 'picture', 'photo'])
+    user_context_lower = (user_context or "").lower()
+    user_wants_img = any(k in user_context_lower for k in ['image', 'vision', 'picture', 'photo'])
     
     # Positive signals (Tabular)
     tabular_keywords = ['csv', 'tabular', 'spreadsheet', 'dataframe', 'timeseries', 'telemetry', 'sensor data', 'clinical records']
