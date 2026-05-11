@@ -10,6 +10,7 @@ from thefuzz import fuzz
 from thefuzz import process
 import zipfile
 import shutil
+import tempfile
 import plotly.express as px
 import plotly.graph_objects as go
 import base64
@@ -98,29 +99,27 @@ def fetch_kaggle_secrets():
 
 @st.cache_data
 def download_and_extract_kaggle_dataset(_api, dataset_ref):
-    download_path = "./kaggle_downloads"
-    os.makedirs(download_path, exist_ok=True)
-    
-    with st.spinner(f"Downloading {dataset_ref}..."):
-        try:
-            _api.dataset_download_files(dataset_ref, path=download_path, unzip=True)
-            # Find the largest CSV file in the directory
-            csv_files = []
-            for root, dirs, files in os.walk(download_path):
-                for file in files:
-                    if file.endswith(".csv"):
-                        csv_files.append(os.path.join(root, file))
-            
-            if not csv_files:
-                st.error("No CSV files found in the downloaded dataset.")
-                return None
+    with tempfile.TemporaryDirectory() as download_path:
+        with st.spinner(f"Downloading {dataset_ref}..."):
+            try:
+                _api.dataset_download_files(dataset_ref, path=download_path, unzip=True)
+                # Find the largest CSV file in the directory
+                csv_files = []
+                for root, dirs, files in os.walk(download_path):
+                    for file in files:
+                        if file.endswith(".csv"):
+                            csv_files.append(os.path.join(root, file))
                 
-            # Get the largest file (assuming it's the main dataset)
-            largest_csv = max(csv_files, key=os.path.getsize)
-            return pd.read_csv(largest_csv)
-        except Exception as e:
-            st.error(f"Error downloading dataset: {e}")
-            return None
+                if not csv_files:
+                    st.error("No CSV files found in the downloaded dataset.")
+                    return None
+
+                # Get the largest file (assuming it's the main dataset)
+                largest_csv = max(csv_files, key=os.path.getsize)
+                return pd.read_csv(largest_csv)
+            except Exception as e:
+                st.error(f"Error downloading dataset: {e}")
+                return None
 
 @st.cache_data
 def semantic_match_columns_with_llm(user_cols, kaggle_cols, llm_provider, llm_url, model_name, api_key=None, proxies=None):
@@ -768,6 +767,3 @@ if 'dataset_options' in st.session_state and st.session_state['dataset_options']
                             mime='application/json',
                             use_container_width=True
                         )
-        # Cleanup downloaded files
-        if os.path.exists("./kaggle_downloads"):
-            shutil.rmtree("./kaggle_downloads")
