@@ -138,7 +138,7 @@ def semantic_match_columns_with_llm(user_cols, kaggle_cols, llm_provider, llm_ur
         raw = call_llm(prompt, llm_provider, llm_url, model_name, api_key, proxies, system_prompt="You are an expert data engineering assistant specializing in schema mapping and semantic alignment. Output ONLY valid JSON.")
         cleaned = raw.replace('```json', '').replace('```', '').strip()
         return json.loads(cleaned)
-    except:
+    except Exception:
         return {}
 
 def fuzzy_match_columns(user_cols, kaggle_cols, threshold=80):
