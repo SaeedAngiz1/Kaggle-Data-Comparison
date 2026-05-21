@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as st_pandas
 import pandas as pd
 import numpy as np
-from scipy import stats
 import os
 import json
 import requests
