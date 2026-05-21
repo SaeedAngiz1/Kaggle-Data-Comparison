@@ -1,3 +1,4 @@
+import html
 import streamlit as st
 import pandas as st_pandas
 import pandas as pd
@@ -558,13 +559,14 @@ with col_search2:
     if st.button("Get related datasets from Kaggle"):
         with st.spinner("Generating Semantic Expansion queries..."):
             expanded = generate_expanded_search_queries(user_text, headers, category, llm_provider, llm_url, llm_model, llm_key, proxies)
-            id_a = expanded.get("identity_a_technical", "")
-            id_b = expanded.get("identity_b_result", "")
-            id_c = expanded.get("identity_c_synonym", "")
+            id_a = html.escape(expanded.get("identity_a_technical", ""))
+            id_b = html.escape(expanded.get("identity_b_result", ""))
+            id_c = html.escape(expanded.get("identity_c_synonym", ""))
+            industry = html.escape(expanded.get('industry', 'Unknown'))
             st.markdown(
                 f"""
                 <div style="background-color: rgba(128, 128, 128, 0.8); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
-                    <strong>Categorized as:</strong> {expanded.get('industry', 'Unknown')}<br><br>
+                    <strong>Categorized as:</strong> {industry}<br><br>
                     <strong>Expanded Search Identities:</strong>
                     <ul style="margin-bottom: 0;">
                         <li><strong>Technical</strong>: {id_a}</li>
@@ -610,10 +612,11 @@ if 'dataset_options' in st.session_state and st.session_state['dataset_options']
                 with st.spinner("AI evaluating symptoms against dataset structure..."):
                     summary_json = kaggle_df.describe().to_json()
                     insights = generate_text_comparison_insights(user_text, summary_json, selected_dataset_ref, llm_provider, llm_url, llm_model, llm_key, proxies)
+                    safe_insights = html.escape(insights)
                     st.markdown(
                         f"""
                         <div style="background-color: rgba(128, 128, 128, 0.8); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; border: 1px solid rgba(128, 128, 128, 0.4);">
-                            {insights}
+                            {safe_insights}
                         </div>
                         """,
                         unsafe_allow_html=True
@@ -722,10 +725,11 @@ if 'dataset_options' in st.session_state and st.session_state['dataset_options']
                     if st.button("Generate Statistical Insights with LLM"):
                         with st.spinner("Analyzing statistics..."):
                             stat_insights = generate_llm_insights(stats_results, llm_provider, llm_url, llm_model, llm_key, proxies)
+                            safe_stat_insights = html.escape(stat_insights)
                             st.markdown(
                                 f"""
                                 <div style="background-color: rgba(128, 128, 128, 0.8); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; border: 1px solid rgba(128, 128, 128, 0.4);">
-                                    {stat_insights}
+                                    {safe_stat_insights}
                                 </div>
                                 """,
                                 unsafe_allow_html=True
