@@ -469,10 +469,12 @@ if uploaded_file is not None:
             user_df = pd.read_json(uploaded_file)
         elif uploaded_file.name.endswith(".pdf"):
             pdf_reader = PyPDF2.PdfReader(uploaded_file)
-            extracted_text = ""
+            extracted_pages = []
             for page in pdf_reader.pages:
-                if page.extract_text():
-                    extracted_text += page.extract_text() + "\n"
+                text = page.extract_text()
+                if text:
+                    extracted_pages.append(text)
+            extracted_text = "\n".join(extracted_pages)
             user_text += "\n\n--- Extracted from PDF ---\n" + extracted_text.strip()
             st.success(f"Successfully extracted text from {uploaded_file.name}.")
         elif uploaded_file.name.endswith(".docx") or uploaded_file.name.endswith(".doc"):
