@@ -317,9 +317,11 @@ def fetch_top_datasets(api, query):
 
 def is_valid_dataset(d, user_context):
     # Filter out image/cv datasets unless user specifically mentions it
-    title_desc_tags = (getattr(d, 'title', '') + " " + getattr(d, 'description', '')).lower()
-    if hasattr(d, 'tags'):
-        title_desc_tags += " " + " ".join([str(t).lower() for t in d.tags])
+    title = getattr(d, 'title', '') or ''
+    description = getattr(d, 'description', '') or ''
+    title_desc_tags = (title + " " + description).lower()
+    if hasattr(d, 'tags') and d.tags:
+        title_desc_tags += " " + " ".join([str(t).lower() for t in d.tags if t is not None])
     
     # Negative signals (Image/CV/Audio)
     img_keywords = ['computer vision', 'image dataset', 'pixels', 'resnet', 'cnn', 'spectrogram', 'audio classification']
