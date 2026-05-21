@@ -10,7 +10,6 @@ from thefuzz import fuzz
 from thefuzz import process
 import zipfile
 import shutil
-import plotly.express as px
 import plotly.graph_objects as go
 import base64
 import io
