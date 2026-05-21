@@ -13,6 +13,28 @@ import base64
 import io
 import PyPDF2
 import docx
+import urllib.parse
+import socket
+import ipaddress
+
+def is_safe_url(url):
+    try:
+        parsed = urllib.parse.urlparse(url)
+        if parsed.scheme not in ('http', 'https'):
+            return False
+        hostname = parsed.hostname
+        if not hostname:
+            return False
+
+        ip_info = socket.getaddrinfo(hostname, None)
+        for info in ip_info:
+            ip_addr = info[4][0]
+            ip = ipaddress.ip_address(ip_addr)
+            if ip.is_loopback or ip.is_private or ip.is_link_local or ip.is_unspecified:
+                return False
+        return True
+    except Exception:
+        return False
 
 # --- CONFIGURATION ---
 st.set_page_config(
@@ -203,6 +225,9 @@ def call_llm(prompt, llm_provider, llm_url, model_name, api_key, proxies, system
         if system_prompt:
             payload["system"] = system_prompt
         
+    if not is_safe_url(endpoint):
+        raise ValueError(f"Unsafe or invalid URL provided: {endpoint}")
+
     response = requests.post(endpoint, json=payload, headers=headers, timeout=300, proxies=proxies)
     response.raise_for_status()
     
