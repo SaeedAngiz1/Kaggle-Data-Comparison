@@ -84,7 +84,7 @@ def add_bg_from_local(image_file):
             unsafe_allow_html=True
         )
     except Exception as e:
-        pass
+        st.error(f"Failed to load background image: {e}")
 
 add_bg_from_local('assets/kaggle-background.png')
 
