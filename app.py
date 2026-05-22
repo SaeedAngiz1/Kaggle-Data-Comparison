@@ -671,7 +671,8 @@ if 'dataset_options' in st.session_state and st.session_state['dataset_options']
                     
                     st.write("### Tabular Delta (Schema Differences)")
                     unmatched_user = [c for c in headers if c not in mapping.keys()]
-                    unmatched_kaggle = [c for c in kaggle_df.columns if c not in mapping.values()]
+                    mapped_kaggle_cols = set(mapping.values())
+                    unmatched_kaggle = [c for c in kaggle_df.columns if c not in mapped_kaggle_cols]
                     
                     delta_col1, delta_col2 = st.columns(2)
                     with delta_col1:
