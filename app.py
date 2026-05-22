@@ -1,6 +1,5 @@
 import html
 import streamlit as st
-import pandas as st_pandas
 import pandas as pd
 import numpy as np
 import os
